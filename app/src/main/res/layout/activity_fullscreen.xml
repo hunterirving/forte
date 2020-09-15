@@ -10,6 +10,7 @@
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
     <ImageView
+
         android:id="@+id/UI_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

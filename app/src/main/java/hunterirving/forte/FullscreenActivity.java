@@ -110,13 +110,18 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
 
+        //TODO:
+        //add onTouchListener to view to listen for MotionEvents
+        //update menu when dragged away from starting point passed a threshold
+        //make text smaller (inkscape)
 
-        //add sounds and vibration on collision with borders
-        //make it actually launch the appropriate apps... hold or tap screen.... i kinda like hold more....?
-        //make it "a launcher"
+        //add sounds and vibration to inform navigation
+        //make it actually launch the appropriate apps... touchdown, drag, release
         //export an APK !!! c:
 
         //DONE
+        //make it "a launcher"
+        //always start on ATLAS (call finish() in onPause())
         //make image go behind the nav bar
         //hide status bar (and nav bar? if possible)
         //add listeners for up and down volume buttons
@@ -125,6 +130,10 @@ public class FullscreenActivity extends AppCompatActivity {
     }
 
 
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
