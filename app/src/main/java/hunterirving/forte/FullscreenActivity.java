@@ -2,6 +2,7 @@ package hunterirving.forte;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,75 +20,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private ImageView UI_container;
     private static int position; //selected UI element
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            updateUI(0);
-            return true;
-        }
-        else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
-            updateUI(1);
-            return true;
-        }
-
-        return false;
-    }
-
-    private void updateUI(int direction){
-        switch (position) {
-            case 0: //atlas
-                switch (direction) {
-                    case 0:
-                        //play error sfx and vibrate
-                        return;
-                    case 1:
-                        //increment pos and update bg image
-                        position++;
-                        findViewById(R.id.UI_container).setBackgroundResource(R.drawable.camera);
-                        return;
-                }
-            case 1: //camera
-                switch (direction) {
-                    case 0:
-                        //decrement pos and update bg image
-                        position--;
-                        findViewById(R.id.UI_container).setBackgroundResource(R.drawable.atlas);
-                        return;
-                    case 1:
-                        position++;
-                        findViewById(R.id.UI_container).setBackgroundResource(R.drawable.telephone);
-                        return;
-                }
-
-            case 2: //telephone
-                switch (direction) {
-                    case 0:
-                        position--;
-                        findViewById(R.id.UI_container).setBackgroundResource(R.drawable.camera);
-                        return;
-                    case 1:
-                        position++;
-                        findViewById(R.id.UI_container).setBackgroundResource(R.drawable.telegraph);
-                        return;
-
-                }
-
-            case 3: //telegraph
-                switch (direction) {
-                    case 0:
-                        position--;
-                        findViewById(R.id.UI_container).setBackgroundResource(R.drawable.telephone);
-                        return;
-                    case 1:
-                        //play error sfx and vibrate
-                        return;
-                }
-
-        }
-    }
-
-
-
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +42,73 @@ public class FullscreenActivity extends AppCompatActivity {
         final ImageView UI_container = (ImageView) findViewById(R.id.UI_container);
 
 
+
+        UI_container.setOnTouchListener(new View.OnTouchListener() {
+            float initial_Y = 0;
+            float chunkSize = 60;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction()== MotionEvent.ACTION_DOWN) {
+                    initial_Y  = event.getY();
+                    //System.out.println("Initial Y: " + Float.toString(initial_Y));
+                    return true;
+                }
+                if (event.getAction()==MotionEvent.ACTION_MOVE){
+                    float delta_Y = initial_Y - event.getY();
+                    //System.out.println("Delta Y: " + Float.toString(delta_Y));
+
+                    if(delta_Y < chunkSize){
+                        if (position != 0){
+                            position = 0;
+                            UI_container.setBackgroundResource(R.drawable.atlas);
+                        }
+                    }
+                    else if(delta_Y >= chunkSize && delta_Y < 2*chunkSize) {
+                        if (position != 1){
+                            position = 1;
+                            UI_container.setBackgroundResource(R.drawable.camera);
+                        }
+                    }
+                    else if(delta_Y >= 2*chunkSize && delta_Y < 3*chunkSize) {
+                        if (position != 2){
+                            position = 2;
+                            UI_container.setBackgroundResource(R.drawable.telephone);
+                        }
+                    }
+                    else if(delta_Y >= 3*chunkSize) {
+                        if (position != 3){
+                            position = 3;
+                            UI_container.setBackgroundResource(R.drawable.telegraph);
+                        }
+                    }
+
+                    return true;
+                }
+                if (event.getAction()==MotionEvent.ACTION_UP){
+
+                    //System.out.println("Up");
+                    if(position == 0){
+                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.apps.maps");
+                        startActivity(launchIntent);
+                    }
+                    else if(position == 1){
+                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.GoogleCamera");
+                        startActivity(launchIntent);
+                    }
+                    else if(position ==2){
+                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.dialer");
+                        startActivity(launchIntent);
+                    }
+                    else if(position ==3){
+                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.apps.messaging");
+                        startActivity(launchIntent);
+                    }
+                    return true;
+                }
+                return false;
+            }
+
+        });
 
         //TODO:
         //add onTouchListener to view to listen for MotionEvents
