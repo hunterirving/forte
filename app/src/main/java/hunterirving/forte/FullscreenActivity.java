@@ -18,9 +18,8 @@ import android.widget.ImageView;
 public class FullscreenActivity extends AppCompatActivity {
 
     private ImageView UI_container;
-    private static int position; //selected UI element
+    private static int position;
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,44 +37,59 @@ public class FullscreenActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
-        position = 0;
+
         final ImageView UI_container = (ImageView) findViewById(R.id.UI_container);
-
-
+        position = 0;
+        UI_container.setBackgroundResource(R.drawable.atlas);
 
         UI_container.setOnTouchListener(new View.OnTouchListener() {
-            float initial_Y = 0;
-            float chunkSize = 60;
+            float chunkSize = 80;
+            //initialize values
+            float Y_start = 0;
+            float Y_end = Y_start + 4*chunkSize;
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction()== MotionEvent.ACTION_DOWN) {
-                    initial_Y  = event.getY();
-                    //System.out.println("Initial Y: " + Float.toString(initial_Y));
+                    Y_start = event.getY();
                     return true;
+
+
+                    /*
+                    IDEA:
+                    a custom lil coord grid that maps between 0(inclusive)-4*chunk size (exclusive)
+                    and we dont worry about original touchdown point
+                    just start out system at 0, listen to DELTAS (changes in motion from last reading)
+                    and update UI based on this custom coordinate system.
+                     */
+
+
+
                 }
                 if (event.getAction()==MotionEvent.ACTION_MOVE){
-                    float delta_Y = initial_Y - event.getY();
-                    //System.out.println("Delta Y: " + Float.toString(delta_Y));
+                    float Y_offset = Y_start - event.getY();
 
-                    if(delta_Y < chunkSize){
+
+                    //update UI based on position
+                    if(Y_offset > 0 && Y_offset < chunkSize){
                         if (position != 0){
                             position = 0;
                             UI_container.setBackgroundResource(R.drawable.atlas);
                         }
                     }
-                    else if(delta_Y >= chunkSize && delta_Y < 2*chunkSize) {
+                    else if(Y_offset >= chunkSize && Y_offset < 2*chunkSize) {
                         if (position != 1){
                             position = 1;
                             UI_container.setBackgroundResource(R.drawable.camera);
                         }
                     }
-                    else if(delta_Y >= 2*chunkSize && delta_Y < 3*chunkSize) {
+                    else if(Y_offset >= 2*chunkSize && Y_offset < 3*chunkSize) {
                         if (position != 2){
                             position = 2;
                             UI_container.setBackgroundResource(R.drawable.telephone);
                         }
                     }
-                    else if(delta_Y >= 3*chunkSize) {
+                    else if(Y_offset >= 3*chunkSize && Y_offset < 4*chunkSize) {
                         if (position != 3){
                             position = 3;
                             UI_container.setBackgroundResource(R.drawable.telegraph);
@@ -85,8 +99,6 @@ public class FullscreenActivity extends AppCompatActivity {
                     return true;
                 }
                 if (event.getAction()==MotionEvent.ACTION_UP){
-
-                    //System.out.println("Up");
                     if(position == 0){
                         Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.apps.maps");
                         startActivity(launchIntent);
@@ -107,19 +119,18 @@ public class FullscreenActivity extends AppCompatActivity {
                 }
                 return false;
             }
-
         });
 
         //TODO:
+        //add sounds and vibration to inform navigation
+
+
+        //DONE:
         //add onTouchListener to view to listen for MotionEvents
         //update menu when dragged away from starting point passed a threshold
         //make text smaller (inkscape)
-
-        //add sounds and vibration to inform navigation
         //make it actually launch the appropriate apps... touchdown, drag, release
-        //export an APK !!! c:
-
-        //DONE
+        //export an APK !!!
         //make it "a launcher"
         //always start on ATLAS (call finish() in onPause())
         //make image go behind the nav bar
@@ -130,15 +141,13 @@ public class FullscreenActivity extends AppCompatActivity {
     }
 
 
+
     protected void onPause() {
         super.onPause();
         finish();
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
+
 
 
 }
