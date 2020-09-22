@@ -3,20 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#000000"
     tools:context=".FullscreenActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <ImageView
 
+
+
+
+    <TextView
         android:id="@+id/UI_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#00000000"
+        android:fontFamily="@font/moonlight"
         android:gravity="center"
         android:keepScreenOn="false"
-        android:background="@drawable/atlas"
-        />
+        android:text="ATLAaaaS"
+        android:textColor="#000000"
+        android:textSize="42dp"
+        android:textAlignment="textStart"
+        android:letterSpacing="0.0"
+        android:paddingLeft="30dp"
+
+        tools:ignore="HardcodedText,RtlCompat,RtlHardcoded,RtlSymmetry,SpUsage" />
 
 </FrameLayout>

@@ -14,21 +14,22 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FullscreenActivity extends AppCompatActivity {
 
-    private ImageView UI_container;
-    private static int position;
+    //private TextView UI_container;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.activity_fullscreen);
-
         this.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -38,94 +39,41 @@ public class FullscreenActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
 
-        final ImageView UI_container = (ImageView) findViewById(R.id.UI_container);
-        position = 0;
-        UI_container.setBackgroundResource(R.drawable.atlas);
+        final TextView UI_container = (TextView) findViewById(R.id.UI_container);
+
+
+        final String[][] appPairs =
+                {
+                 {"ATLAS"},{"com.google.android.apps.maps"},
+                 {"CAMERA"},{"com.google.android.GoogleCamera"},
+                 {"TELEPHONE"},{"com.google.android.dialer"},
+                 {"TELEGRAPH"},{"com.google.android.apps.messaging"}
+                };
+
+
 
         UI_container.setOnTouchListener(new View.OnTouchListener() {
-            float chunkSize = 80;
-            //initialize values
-            float Y_start = 0;
-            float Y_end = Y_start + 4*chunkSize;
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction()== MotionEvent.ACTION_DOWN) {
-                    Y_start = event.getY();
-                    return true;
-
-
-                    /*
-                    IDEA:
-                    a custom lil coord grid that maps between 0(inclusive)-4*chunk size (exclusive)
-                    and we dont worry about original touchdown point
-                    just start out system at 0, listen to DELTAS (changes in motion from last reading)
-                    and update UI based on this custom coordinate system.
-                     */
-
-
-
-                }
                 if (event.getAction()==MotionEvent.ACTION_MOVE){
-                    float Y_offset = Y_start - event.getY();
-
-
-                    //update UI based on position
-                    if(Y_offset > 0 && Y_offset < chunkSize){
-                        if (position != 0){
-                            position = 0;
-                            UI_container.setBackgroundResource(R.drawable.atlas);
-                        }
-                    }
-                    else if(Y_offset >= chunkSize && Y_offset < 2*chunkSize) {
-                        if (position != 1){
-                            position = 1;
-                            UI_container.setBackgroundResource(R.drawable.camera);
-                        }
-                    }
-                    else if(Y_offset >= 2*chunkSize && Y_offset < 3*chunkSize) {
-                        if (position != 2){
-                            position = 2;
-                            UI_container.setBackgroundResource(R.drawable.telephone);
-                        }
-                    }
-                    else if(Y_offset >= 3*chunkSize && Y_offset < 4*chunkSize) {
-                        if (position != 3){
-                            position = 3;
-                            UI_container.setBackgroundResource(R.drawable.telegraph);
-                        }
-                    }
 
                     return true;
                 }
-                if (event.getAction()==MotionEvent.ACTION_UP){
-                    if(position == 0){
-                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.apps.maps");
-                        startActivity(launchIntent);
-                    }
-                    else if(position == 1){
-                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.GoogleCamera");
-                        startActivity(launchIntent);
-                    }
-                    else if(position ==2){
-                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.dialer");
-                        startActivity(launchIntent);
-                    }
-                    else if(position ==3){
-                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.apps.messaging");
-                        startActivity(launchIntent);
-                    }
-                    return true;
-                }
+
                 return false;
             }
         });
 
         //TODO:
+
+        //improved dragging based on touch deltas..?
+        //consider re-implementing volume controls
         //add sounds and vibration to inform navigation
 
 
         //DONE:
+        //use TextView instead of ImageView (faster)
+        //changed green title bar to black
         //add onTouchListener to view to listen for MotionEvents
         //update menu when dragged away from starting point passed a threshold
         //make text smaller (inkscape)
