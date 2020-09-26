@@ -22,7 +22,22 @@ import java.util.List;
 
 public class FullscreenActivity extends AppCompatActivity {
 
-    //private TextView UI_container;
+
+    final String[][] appPairs =
+            {
+                    {"ATLAS","com.google.android.apps.maps"},
+                    {"CAMERA","com.google.android.GoogleCamera"},
+                    {"TELEPHONE","com.google.android.dialer"},
+                    {"TELEGRAPH","com.google.android.apps.messaging"}
+            };
+
+    int chunkSize = 100; //
+    float maxPos = chunkSize * appPairs.length; // 320
+    float pos = 0; //0->320, position in UI land
+    int index; // 0->(appPairs.length)
+
+    float lastKnownY = 0; //0 until first ACTION_DOWN event.
+    float yDelta = 0; // (most recent ACTION_MOVE position - lastKnownY) = Y delta.. (used to update pos)
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -30,6 +45,9 @@ public class FullscreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fullscreen);
+
+
+
         this.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -38,31 +56,89 @@ public class FullscreenActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
-
-        final TextView UI_container = (TextView) findViewById(R.id.UI_container);
-
-
-        final String[][] appPairs =
-                {
-                 {"ATLAS"},{"com.google.android.apps.maps"},
-                 {"CAMERA"},{"com.google.android.GoogleCamera"},
-                 {"TELEPHONE"},{"com.google.android.dialer"},
-                 {"TELEGRAPH"},{"com.google.android.apps.messaging"}
-                };
-
+        final TextView UI_container = findViewById(R.id.UI_container); //maybe should have a view to hold this and all else?
+        final TextView selected_item = findViewById(R.id.selected_item);
 
 
         UI_container.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction()==MotionEvent.ACTION_MOVE){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    lastKnownY = event.getY();
+                    return true;
+                }
+
+                else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    float newY = event.getY(); //get most recent Y position
+                    yDelta = newY - lastKnownY; //determine delta from last known position
+                    lastKnownY = newY; //store most recent Y position
+
+
+                    //Add newest movement delta to position
+                    float unclampedPos = pos + yDelta;
+
+                    //sanity check (clamp pos within UI bounds)
+                    if (unclampedPos < 0) {
+                            pos = 0;
+                    }
+                    else if (unclampedPos >= maxPos) {
+                        pos = maxPos - 1;
+                    }
+                    else {
+                        pos = unclampedPos;
+                    }
+
+                    //determine index of item that needs to be selected
+                    index = (int) (pos/chunkSize); //0, 1, 2, or 3
+
+                    System.out.println("pos: " + pos);
+                    System.out.println("maxPos: " + maxPos);
+                    System.out.println("index: " + index);
+
+
+                    String UI_backgroundString = "";
+
+                    //rebuild TextView strings
+                    //beginning
+                    for (int i = 0; i < (appPairs.length) - index; i++){
+                        UI_backgroundString += "\n";
+                    }
+                    //middle
+                    for (int i = 0; i < appPairs.length; i++){
+                        UI_backgroundString += appPairs[i][0] + "\n";
+                    }
+                    //end
+                    for (int i = 0; i < index; i++){
+                        UI_backgroundString += "\n";
+                    }
+                    System.out.println("UI_backgroundString: " + UI_backgroundString);
+
+                    //update TextViews
+                    UI_container.setText(UI_backgroundString);
+                    selected_item.setText(appPairs[index][0]);
 
                     return true;
+                }
+                else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    //launch the appropriate app
+
+                    //using POS and APPPAIRS.LENGTH
+                    //determine the currently selected element in APPPAIRS, then launch it
+
                 }
 
                 return false;
             }
         });
+
+
+        // on touch down, start listening
+        // initial down position becomes "zero"
+        // bottoms out at zero, and tops out at 4 * chunksize
+        // all "deltas" are added to last known val (which has been capped) to get new positions
+
+
+
 
         //TODO:
 
@@ -87,15 +163,6 @@ public class FullscreenActivity extends AppCompatActivity {
         //ignore the default behavior of those buttons
         //make it change the bg image when those buttons are hit
     }
-
-
-
-    protected void onPause() {
-        super.onPause();
-        finish();
-    }
-
-
 
 
 }
