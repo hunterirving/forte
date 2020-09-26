@@ -13,7 +13,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
@@ -58,17 +60,15 @@ public class FullscreenActivity extends AppCompatActivity {
 
         final TextView UI_container = findViewById(R.id.UI_container); //maybe should have a view to hold this and all else?
         final TextView selected_item = findViewById(R.id.selected_item);
+        final FrameLayout Frame = findViewById(R.id.Frame);
 
-
-        UI_container.setOnTouchListener(new View.OnTouchListener() {
+        Frame.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     lastKnownY = event.getY();
                     return true;
-                }
-
-                else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     float newY = event.getY(); //get most recent Y position
                     yDelta = newY - lastKnownY; //determine delta from last known position
                     lastKnownY = newY; //store most recent Y position
@@ -79,17 +79,15 @@ public class FullscreenActivity extends AppCompatActivity {
 
                     //sanity check (clamp pos within UI bounds)
                     if (unclampedPos < 0) {
-                            pos = 0;
-                    }
-                    else if (unclampedPos >= maxPos) {
+                        pos = 0;
+                    } else if (unclampedPos >= maxPos) {
                         pos = maxPos - 1;
-                    }
-                    else {
+                    } else {
                         pos = unclampedPos;
                     }
 
                     //determine index of item that needs to be selected
-                    index = (int) (pos/chunkSize); //0, 1, 2, or 3
+                    index = (int) (pos / chunkSize); //0, 1, 2, or 3
 
                     System.out.println("pos: " + pos);
                     System.out.println("maxPos: " + maxPos);
@@ -100,15 +98,15 @@ public class FullscreenActivity extends AppCompatActivity {
 
                     //rebuild TextView strings
                     //beginning
-                    for (int i = 0; i < (appPairs.length) - index; i++){
+                    for (int i = 0; i < (appPairs.length) - index; i++) {
                         UI_backgroundString += "\n";
                     }
                     //middle
-                    for (int i = 0; i < appPairs.length; i++){
+                    for (int i = 0; i < appPairs.length; i++) {
                         UI_backgroundString += appPairs[i][0] + "\n";
                     }
                     //end
-                    for (int i = 0; i < index; i++){
+                    for (int i = 0; i < index; i++) {
                         UI_backgroundString += "\n";
                     }
                     System.out.println("UI_backgroundString: " + UI_backgroundString);
@@ -118,8 +116,7 @@ public class FullscreenActivity extends AppCompatActivity {
                     selected_item.setText(appPairs[index][0]);
 
                     return true;
-                }
-                else if (event.getAction() == MotionEvent.ACTION_UP) {
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     //launch the appropriate app
 
                     //using POS and APPPAIRS.LENGTH
@@ -128,26 +125,23 @@ public class FullscreenActivity extends AppCompatActivity {
                 }
 
                 return false;
+
             }
         });
 
-
-        // on touch down, start listening
-        // initial down position becomes "zero"
-        // bottoms out at zero, and tops out at 4 * chunksize
-        // all "deltas" are added to last known val (which has been capped) to get new positions
 
 
 
 
         //TODO:
-
-        //improved dragging based on touch deltas..?
-        //consider re-implementing volume controls
+        //invert controls
         //add sounds and vibration to inform navigation
-
+        //reintroduce launcher capabilities
+        //handle exiting/pausing the app
 
         //DONE:
+        //consider re-implementing volume controls (considered, but not implemented)
+        //improved dragging based on touch deltas..?
         //use TextView instead of ImageView (faster)
         //changed green title bar to black
         //add onTouchListener to view to listen for MotionEvents
