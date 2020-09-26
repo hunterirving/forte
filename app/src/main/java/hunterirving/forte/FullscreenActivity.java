@@ -48,8 +48,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_fullscreen);
 
-
-
         this.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -70,7 +68,7 @@ public class FullscreenActivity extends AppCompatActivity {
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     float newY = event.getY(); //get most recent Y position
-                    yDelta = newY - lastKnownY; //determine delta from last known position
+                    yDelta = lastKnownY - newY; //determine delta from last known position
                     lastKnownY = newY; //store most recent Y position
 
 
@@ -85,6 +83,9 @@ public class FullscreenActivity extends AppCompatActivity {
                     } else {
                         pos = unclampedPos;
                     }
+
+                    //invert direction?
+
 
                     //determine index of item that needs to be selected
                     index = (int) (pos / chunkSize); //0, 1, 2, or 3
