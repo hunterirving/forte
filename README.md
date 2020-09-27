@@ -1,4 +1,4 @@
 # forte
-a minimalist android launcher to make your smartphone dumber
+a minimalist android launcher that makes your smartphone dumber
 <br><br>
 <img src="forte.gif" height=500>
