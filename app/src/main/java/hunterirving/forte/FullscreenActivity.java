@@ -1,30 +1,17 @@
 package hunterirving.forte;
-
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.content.Intent;
+import android.content.Context;
 import android.os.Build;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 
 public class FullscreenActivity extends AppCompatActivity {
-
-
     final String[][] appPairs =
             {
                     {"ATLAS","com.google.android.apps.maps"},
@@ -33,18 +20,22 @@ public class FullscreenActivity extends AppCompatActivity {
                     {"TELEGRAPH","com.google.android.apps.messaging"}
             };
 
-    int chunkSize = 100; //
+    int chunkSize = 85; //
     float maxPos = chunkSize * appPairs.length; // 320
-    float pos = 0; //0->320, position in UI land
-    int index; // 0->(appPairs.length)
+    float pos = 0; //0-(maxPos-1) (position within UI bounds)
+    int index = 0; //0-(appPairs.length-1) (index of selected element in appPairs)
 
-    float lastKnownY = 0; //0 until first ACTION_DOWN event.
-    float yDelta = 0; // (most recent ACTION_MOVE position - lastKnownY) = Y delta.. (used to update pos)
+    float lastKnownY = 0;
+    float yDelta = 0;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
 
         setContentView(R.layout.activity_fullscreen);
 
@@ -60,11 +51,14 @@ public class FullscreenActivity extends AppCompatActivity {
         final TextView selected_item = findViewById(R.id.selected_item);
         final FrameLayout Frame = findViewById(R.id.Frame);
 
+
+
         Frame.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     lastKnownY = event.getY();
+
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     float newY = event.getY(); //get most recent Y position
@@ -88,7 +82,17 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
                     //determine index of item that needs to be selected
+                    int prevIndex = index;
                     index = (int) (pos / chunkSize); //0, 1, 2, or 3
+
+                    if (index != prevIndex) {
+                        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            vibrator.vibrate(VibrationEffect.createOneShot(25, 55));
+                        } else {
+                            vibrator.vibrate(55);
+                        }
+                    }
 
                     System.out.println("pos: " + pos);
                     System.out.println("maxPos: " + maxPos);
@@ -135,12 +139,12 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
         //TODO:
-        //invert controls
         //add sounds and vibration to inform navigation
         //reintroduce launcher capabilities
         //handle exiting/pausing the app
 
         //DONE:
+        //invert controls
         //consider re-implementing volume controls (considered, but not implemented)
         //improved dragging based on touch deltas..?
         //use TextView instead of ImageView (faster)
