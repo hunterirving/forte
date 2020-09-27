@@ -1,6 +1,7 @@
 package hunterirving.forte;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,11 +33,6 @@ public class FullscreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
-
         setContentView(R.layout.activity_fullscreen);
 
         this.getWindow().getDecorView().setSystemUiVisibility(
@@ -94,10 +90,6 @@ public class FullscreenActivity extends AppCompatActivity {
                         }
                     }
 
-                    System.out.println("pos: " + pos);
-                    System.out.println("maxPos: " + maxPos);
-                    System.out.println("index: " + index);
-
 
                     String UI_backgroundString = "";
 
@@ -114,7 +106,6 @@ public class FullscreenActivity extends AppCompatActivity {
                     for (int i = 0; i < index; i++) {
                         UI_backgroundString += "\n";
                     }
-                    System.out.println("UI_backgroundString: " + UI_backgroundString);
 
                     //update TextViews
                     UI_container.setText(UI_backgroundString);
@@ -122,11 +113,8 @@ public class FullscreenActivity extends AppCompatActivity {
 
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    //launch the appropriate app
-
-                    //using POS and APPPAIRS.LENGTH
-                    //determine the currently selected element in APPPAIRS, then launch it
-
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appPairs[index][1]);
+                    startActivity(launchIntent);
                 }
 
                 return false;
@@ -139,11 +127,12 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
         //TODO:
-        //add sounds and vibration to inform navigation
-        //reintroduce launcher capabilities
         //handle exiting/pausing the app
+        //reinstate launcher/home app status?
 
         //DONE:
+        //add vibration to inform navigation
+        //re-enabled launching apps
         //invert controls
         //consider re-implementing volume controls (considered, but not implemented)
         //improved dragging based on touch deltas..?
