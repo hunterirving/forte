@@ -2,8 +2,6 @@ package hunterirving.forte;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioAttributes;
-import android.media.SoundPool;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,31 +29,9 @@ public class FullscreenActivity extends AppCompatActivity {
     float lastKnownY = 0;
     float yDelta = 0;
 
-    AudioAttributes attributes = new AudioAttributes.Builder()
-            .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
-            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-            .build();
-
-    SoundPool sounds = new SoundPool.Builder()
-            .setAudioAttributes(attributes)
-            .build();
-
-
-
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        AudioAttributes attributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_GAME)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .build();
-        sounds = new SoundPool.Builder()
-                .setAudioAttributes(attributes)
-                .build();
-
-        final int j = sounds.load(this, R.raw.i37, 1);
 
 
 
@@ -110,7 +86,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
                     //determine if UI needs to be updated
                     if (index != prevIndex) {
-                        sounds.play(j, 1, 1, 1, 0, 1f);
+
                         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             vibrator.vibrate(VibrationEffect.createOneShot(25, 55));
