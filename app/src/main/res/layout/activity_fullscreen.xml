@@ -1,34 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    android:id="@+id/Frame"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
     tools:context=".FullscreenActivity">
 
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
 
 
 
+    <View
+        android:id="@+id/white_bar"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#FFFFFF"
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/UI_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="#00000000"
+        android:fontFamily="@font/moonlight"
+        android:gravity="center"
+        android:letterSpacing="0.05"
+        android:lineSpacingExtra="13.5dp"
+        android:paddingLeft="26dp"
+        android:text=""
+        android:textAlignment="textStart"
+        android:textColor="#FFFFFF"
+        android:textSize="42dp"
+        android:paddingTop="3dp"
+        tools:ignore="HardcodedText,RtlCompat,RtlHardcoded,RtlSymmetry,SpUsage" />
+
+    <TextView
+        android:id="@+id/selected_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="#00000000"
         android:fontFamily="@font/moonlight"
         android:gravity="center"
-        android:keepScreenOn="false"
-        android:text="ATLAaaaS"
+        android:paddingLeft="26dp"
+        android:text=""
+        android:textAlignment="textStart"
+        android:letterSpacing="0.05"
+        android:lineSpacingExtra="13.5dp"
         android:textColor="#000000"
         android:textSize="42dp"
-        android:textAlignment="textStart"
-        android:letterSpacing="0.0"
-        android:paddingLeft="30dp"
-
+        android:paddingTop="3dp"
         tools:ignore="HardcodedText,RtlCompat,RtlHardcoded,RtlSymmetry,SpUsage" />
 
 </FrameLayout>
