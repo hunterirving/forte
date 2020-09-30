@@ -1,5 +1,4 @@
 package hunterirving.forte;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -192,4 +191,5 @@ public class FullscreenActivity extends AppCompatActivity {
 }
 
 //TODO:
+//Exception handling when attempting to launch intents
 //add keyboard support c:
