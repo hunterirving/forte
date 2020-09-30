@@ -3,14 +3,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 
 public class FullscreenActivity extends AppCompatActivity {
     final String[][] appPairs =
@@ -33,6 +33,7 @@ public class FullscreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_fullscreen);
 
         this.getWindow().getDecorView().setSystemUiVisibility(
@@ -56,6 +57,7 @@ public class FullscreenActivity extends AppCompatActivity {
         for (int i = 0; i < index; i++) {
             UI_backgroundString += "\n";
         }
+
         UI_container.setText(UI_backgroundString);
         selected_item.setText(appPairs[index][0]);
 
@@ -73,7 +75,6 @@ public class FullscreenActivity extends AppCompatActivity {
                     yDelta = lastKnownY - newY; //determine delta from last known position
                     lastKnownY = newY; //store most recent Y position
 
-
                     //Add newest movement delta to position
                     float unclampedPos = pos + yDelta;
 
@@ -86,12 +87,9 @@ public class FullscreenActivity extends AppCompatActivity {
                         pos = unclampedPos;
                     }
 
-                    //invert direction?
-
-
                     //determine index of item that needs to be selected
                     int prevIndex = index;
-                    index = (int) (pos / chunkSize); //0, 1, 2, or 3
+                    index = (int) (pos / chunkSize);
 
                     //determine if UI needs to be updated
                     if (index != prevIndex) {
@@ -122,36 +120,35 @@ public class FullscreenActivity extends AppCompatActivity {
                         }
                     }
 
-
-
-
                     return true;
+
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appPairs[index][1]);
                     startActivity(launchIntent);
                 }
 
                 return false;
-
             }
         });
-
-
-
-
-
-
-
     }
 
     @Override
-    protected void onRestart(){
-        super.onRestart();
+    protected void onResume(){
+        super.onResume();
+
         pos = 0; //0-(maxPos-1) (position within UI bounds)
         index = 0; //0-(appPairs.length-1) (index of selected element in appPairs)
 
         lastKnownY = 0;
         yDelta = 0;
+
+        this.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         //Re-Initialize UI
         final TextView UI_container = findViewById(R.id.UI_container);
@@ -161,6 +158,7 @@ public class FullscreenActivity extends AppCompatActivity {
         for (int i = 0; i < (appPairs.length) - index; i++) {
             UI_backgroundString += "\n";
         }
+
         for (int i = 0; i < appPairs.length; i++) {
             UI_backgroundString += appPairs[i][0] + "\n";
         }
@@ -170,16 +168,14 @@ public class FullscreenActivity extends AppCompatActivity {
         UI_container.setText(UI_backgroundString);
         selected_item.setText(appPairs[index][0]);
 
-
     }
-
 }
 
 //TODO:
-//return to atlas onResume()
 //add keyboard support
 
 //DONE:
+//return to atlas onResume()
 //add click sound (Ssoundbuffer)
 //handle exiting/pausing the app
 //reinstate launcher/home app status?
