@@ -21,8 +21,8 @@ public class FullscreenActivity extends AppCompatActivity {
                     {"TELEGRAPH","com.google.android.apps.messaging"}
             };
 
-    int chunkSize = 85; //
-    float maxPos = chunkSize * appPairs.length; // 320
+    int chunkSize = 85;
+    float maxPos = chunkSize * appPairs.length;
     float pos = 0; //0-(maxPos-1) (position within UI bounds)
     int index = 0; //0-(appPairs.length-1) (index of selected element in appPairs)
 
@@ -46,6 +46,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
         final TextView UI_container = findViewById(R.id.UI_container);
         final TextView selected_item = findViewById(R.id.selected_item);
+
         //Initialize UI
         String UI_backgroundString = "";
         for (int i = 0; i < (appPairs.length) - index; i++) {
@@ -71,9 +72,9 @@ public class FullscreenActivity extends AppCompatActivity {
                     return true;
 
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    float newY = event.getY(); //get most recent Y position
-                    yDelta = lastKnownY - newY; //determine delta from last known position
-                    lastKnownY = newY; //store most recent Y position
+                    float newY = event.getY();
+                    yDelta = lastKnownY - newY;
+                    lastKnownY = newY;
 
                     //Add newest movement delta to position
                     float unclampedPos = pos + yDelta;
@@ -167,7 +168,6 @@ public class FullscreenActivity extends AppCompatActivity {
         }
         UI_container.setText(UI_backgroundString);
         selected_item.setText(appPairs[index][0]);
-
     }
 }
 
