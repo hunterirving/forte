@@ -21,12 +21,14 @@ import static android.content.Intent.CATEGORY_DEFAULT;
 import static android.provider.MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA;
 
 public class FullscreenActivity extends AppCompatActivity {
-    //DISPLAY_NAME, INTENT_TYPE, INTENT_CATEGORY
+    //DISPLAY_NAME, INTENT_TYPE, INTENT_CATEGORY, PACKAGE_NAME
+    //each appPair must include either <INTENT_TYPE and INTENT_CATEGORY> or <PACKAGE_NAME>
     final String[][] appPairs = {
-                    {"ATLAS", ACTION_MAIN, CATEGORY_APP_MAPS},
-                    {"CAMERA", INTENT_ACTION_STILL_IMAGE_CAMERA, CATEGORY_DEFAULT},
-                    {"TELEPHONE", ACTION_CALL_BUTTON, CATEGORY_DEFAULT},
-                    {"TELEGRAPH", ACTION_MAIN, CATEGORY_APP_MESSAGING}
+                    {"ATLAS", ACTION_MAIN, CATEGORY_APP_MAPS, null},
+                    {"CAMERA", INTENT_ACTION_STILL_IMAGE_CAMERA, CATEGORY_DEFAULT, null},
+                    {"TELEPHONE", ACTION_CALL_BUTTON, CATEGORY_DEFAULT, null},
+                    {"TELEGRAPH", ACTION_MAIN, CATEGORY_APP_MESSAGING, null}/*,
+                    {"PHONOGRAPH", null, null, "com.spotify.music"}*/
             };
 
     int chunkSize = 85;
@@ -79,7 +81,8 @@ public class FullscreenActivity extends AppCompatActivity {
                     lastKnownY = event.getY();
                     return true;
 
-                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                }
+                else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     float newY = event.getY();
                     yDelta = lastKnownY - newY;
                     lastKnownY = newY;
@@ -131,13 +134,19 @@ public class FullscreenActivity extends AppCompatActivity {
 
                     return true;
 
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-
-
-                    Intent launchIntent = new Intent(appPairs[index][1]);
-                    launchIntent.addCategory(appPairs[index][2]);
-                    launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(launchIntent);
+                }
+                else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if(appPairs[3] == null) {
+                        Intent launchIntent = new Intent(appPairs[index][1]);
+                        launchIntent.addCategory(appPairs[index][2]);
+                        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(launchIntent);
+                    }
+                    //handle explicitly defined packages (eg: spotify)
+                    else {
+                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appPairs[index][3]);
+                        startActivity(launchIntent);
+                    }
                 }
 
                 return false;
