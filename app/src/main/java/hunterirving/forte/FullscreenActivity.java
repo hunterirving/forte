@@ -1,4 +1,5 @@
 package hunterirving.forte;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -12,13 +13,20 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import static android.content.Intent.ACTION_CALL_BUTTON;
+import static android.content.Intent.ACTION_MAIN;
+import static android.content.Intent.CATEGORY_APP_MAPS;
+import static android.content.Intent.CATEGORY_APP_MESSAGING;
+import static android.content.Intent.CATEGORY_DEFAULT;
+import static android.provider.MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA;
+
 public class FullscreenActivity extends AppCompatActivity {
-    final String[][] appPairs =
-            {
-                    {"ATLAS","com.google.android.apps.maps"},
-                    {"CAMERA","com.google.android.GoogleCamera"},
-                    {"TELEPHONE","com.google.android.dialer"},
-                    {"TELEGRAPH","com.google.android.apps.messaging"}
+    //DISPLAY_NAME, INTENT_TYPE, INTENT_CATEGORY
+    final String[][] appPairs = {
+                    {"ATLAS", ACTION_MAIN, CATEGORY_APP_MAPS},
+                    {"CAMERA", INTENT_ACTION_STILL_IMAGE_CAMERA, CATEGORY_DEFAULT},
+                    {"TELEPHONE", ACTION_CALL_BUTTON, CATEGORY_DEFAULT},
+                    {"TELEGRAPH", ACTION_MAIN, CATEGORY_APP_MESSAGING}
             };
 
     int chunkSize = 85;
@@ -124,7 +132,11 @@ public class FullscreenActivity extends AppCompatActivity {
                     return true;
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appPairs[index][1]);
+
+
+                    Intent launchIntent = new Intent(appPairs[index][1]);
+                    launchIntent.addCategory(appPairs[index][2]);
+                    launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(launchIntent);
                 }
 
@@ -159,7 +171,6 @@ public class FullscreenActivity extends AppCompatActivity {
         for (int i = 0; i < (appPairs.length) - index; i++) {
             UI_backgroundString += "\n";
         }
-
         for (int i = 0; i < appPairs.length; i++) {
             UI_backgroundString += appPairs[i][0] + "\n";
         }
@@ -172,4 +183,4 @@ public class FullscreenActivity extends AppCompatActivity {
 }
 
 //TODO:
-//add keyboard support
+//add keyboard support c:
