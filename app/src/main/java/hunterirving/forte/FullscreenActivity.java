@@ -68,8 +68,8 @@ public class FullscreenActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     lastKnownY = event.getY();
-
                     return true;
+
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     float newY = event.getY(); //get most recent Y position
                     yDelta = lastKnownY - newY; //determine delta from last known position
@@ -173,28 +173,3 @@ public class FullscreenActivity extends AppCompatActivity {
 
 //TODO:
 //add keyboard support
-
-//DONE:
-//return to atlas onResume()
-//add click sound (Ssoundbuffer)
-//handle exiting/pausing the app
-//reinstate launcher/home app status?
-//add vibration to inform navigation
-//re-enabled launching apps
-//invert controls
-//consider re-implementing volume controls (considered, but not implemented)
-//improved dragging based on touch deltas..?
-//use TextView instead of ImageView (faster)
-//changed green title bar to black
-//add onTouchListener to view to listen for MotionEvents
-//update menu when dragged away from starting point passed a threshold
-//make text smaller (inkscape)
-//make it actually launch the appropriate apps... touchdown, drag, release
-//export an APK !!!
-//make it "a launcher"
-//always start on ATLAS (call finish() in onPause())
-//make image go behind the nav bar
-//hide status bar (and nav bar? if possible)
-//add listeners for up and down volume buttons
-//ignore the default behavior of those buttons
-//make it change the bg image when those buttons are hit
