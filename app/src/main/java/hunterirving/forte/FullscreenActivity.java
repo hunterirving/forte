@@ -135,11 +135,12 @@ public class FullscreenActivity extends AppCompatActivity {
 
                 }
                 else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if(appPairs[3] == null) {
+                    if(appPairs[index][3] == null) {
                         Intent launchIntent = new Intent(appPairs[index][1]);
                         launchIntent.addCategory(appPairs[index][2]);
                         launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(launchIntent);
+
                     }
                     //handle explicitly defined packages (eg: spotify)
                     else {
@@ -192,5 +193,4 @@ public class FullscreenActivity extends AppCompatActivity {
 
 //TODO:
 //Exception handling when attempting to launch intents
-//add app icon
 //add keyboard support c:
