@@ -1,4 +1,5 @@
 package hunterirving.forte;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import static android.content.Intent.ACTION_CALL_BUTTON;
 import static android.content.Intent.ACTION_MAIN;
@@ -26,7 +28,7 @@ public class FullscreenActivity extends AppCompatActivity {
                     {"ATLAS", ACTION_MAIN, CATEGORY_APP_MAPS, null},
                     {"CAMERA", INTENT_ACTION_STILL_IMAGE_CAMERA, CATEGORY_DEFAULT, null},
                     {"TELEPHONE", ACTION_CALL_BUTTON, CATEGORY_DEFAULT, null},
-                    {"TELEGRAPH", ACTION_MAIN, CATEGORY_APP_MESSAGING, null},/*
+                    {"TELEGRAPH", ACTION_MAIN, CATEGORY_APP_MESSAGING, null}/*,
                     {"PHONOGRAPH", null, null, "com.spotify.music"}*/
             };
 
@@ -145,9 +147,16 @@ public class FullscreenActivity extends AppCompatActivity {
                     else {
                         launchIntent = getPackageManager().getLaunchIntentForPackage(appPairs[index][3]);
                     }
-
-                    launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(launchIntent);
+                    try {
+                        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(launchIntent);
+                    }
+                    catch(Exception e) {
+                        CharSequence text = appPairs[index][0] + " UNAVAILABLE";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                        toast.show();
+                    }
                 }
 
                 return false;
@@ -193,5 +202,4 @@ public class FullscreenActivity extends AppCompatActivity {
 }
 
 //TODO:
-//Exception handling when attempting to launch intents
 //add keyboard support c:
