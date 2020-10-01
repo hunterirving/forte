@@ -135,18 +135,19 @@ public class FullscreenActivity extends AppCompatActivity {
 
                 }
                 else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if(appPairs[index][3] == null) {
-                        Intent launchIntent = new Intent(appPairs[index][1]);
-                        launchIntent.addCategory(appPairs[index][2]);
-                        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(launchIntent);
+                    Intent launchIntent;
 
+                    if(appPairs[index][3] == null) {
+                        launchIntent = new Intent(appPairs[index][1]);
+                        launchIntent.addCategory(appPairs[index][2]);
                     }
                     //handle explicitly defined packages (eg: spotify)
                     else {
-                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appPairs[index][3]);
-                        startActivity(launchIntent);
+                        launchIntent = getPackageManager().getLaunchIntentForPackage(appPairs[index][3]);
                     }
+
+                    launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(launchIntent);
                 }
 
                 return false;
