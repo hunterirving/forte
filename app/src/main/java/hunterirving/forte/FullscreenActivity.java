@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -36,7 +37,6 @@ public class FullscreenActivity extends AppCompatActivity {
     float maxPos = chunkSize * appPairs.length;
     float pos = 0; //0-(maxPos-1) (position within UI bounds)
     int index = 0; //0-(appPairs.length-1) (index of selected element in appPairs)
-
     float lastKnownY = 0;
     float yDelta = 0;
 
@@ -55,26 +55,16 @@ public class FullscreenActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
-        final TextView UI_container = findViewById(R.id.UI_container);
-        final TextView selected_item = findViewById(R.id.selected_item);
+        final FrameLayout Frame = findViewById(R.id.Frame);
+        final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         //Initialize UI
-        String UI_backgroundString = "";
-        for (int i = 0; i < (appPairs.length) - index; i++) {
-            UI_backgroundString += "\n";
-        }
-        for (int i = 0; i < appPairs.length; i++) {
-            UI_backgroundString += appPairs[i][0] + "\n";
-        }
-        for (int i = 0; i < index; i++) {
-            UI_backgroundString += "\n";
-        }
-
-        UI_container.setText(UI_backgroundString);
+        final TextView UI_container = findViewById(R.id.UI_container);
+        final TextView selected_item = findViewById(R.id.selected_item);
+        UI_container.setText(get_UI_String(appPairs, index));
         selected_item.setText(appPairs[index][0]);
 
-        final FrameLayout Frame = findViewById(R.id.Frame);
-
+        //listen for touch events
         Frame.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -82,8 +72,7 @@ public class FullscreenActivity extends AppCompatActivity {
                     lastKnownY = event.getY();
                     return true;
 
-                }
-                else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     float newY = event.getY();
                     yDelta = lastKnownY - newY;
                     lastKnownY = newY;
@@ -92,13 +81,7 @@ public class FullscreenActivity extends AppCompatActivity {
                     float unclampedPos = pos + yDelta;
 
                     //sanity check (clamp pos within UI bounds)
-                    if (unclampedPos < 0) {
-                        pos = 0;
-                    } else if (unclampedPos >= maxPos) {
-                        pos = maxPos - 1;
-                    } else {
-                        pos = unclampedPos;
-                    }
+                    pos = clamp(unclampedPos);
 
                     //determine index of item that needs to be selected
                     int prevIndex = index;
@@ -106,57 +89,20 @@ public class FullscreenActivity extends AppCompatActivity {
 
                     //determine if UI needs to be updated
                     if (index != prevIndex) {
-                        String UI_backgroundString = "";
-
-                        //rebuild TextView strings
-                        //beginning
-                        for (int i = 0; i < (appPairs.length) - index; i++) {
-                            UI_backgroundString += "\n";
-                        }
-                        //middle
-                        for (int i = 0; i < appPairs.length; i++) {
-                            UI_backgroundString += appPairs[i][0] + "\n";
-                        }
-                        //end
-                        for (int i = 0; i < index; i++) {
-                            UI_backgroundString += "\n";
-                        }
-                        //update TextViews
-                        UI_container.setText(UI_backgroundString);
+                        UI_container.setText(get_UI_String(appPairs, index));
                         selected_item.setText(appPairs[index][0]);
 
-                        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             vibrator.vibrate(VibrationEffect.createOneShot(25, 55));
                         } else {
                             vibrator.vibrate(55);
                         }
                     }
-
                     return true;
 
-                }
-                else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Intent launchIntent;
-
-                    if(appPairs[index][3] == null) {
-                        launchIntent = new Intent(appPairs[index][1]);
-                        launchIntent.addCategory(appPairs[index][2]);
-                    }
-                    //handle explicitly defined packages (eg: spotify)
-                    else {
-                        launchIntent = getPackageManager().getLaunchIntentForPackage(appPairs[index][3]);
-                    }
-                    try {
-                        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(launchIntent);
-                    }
-                    catch(Exception e) {
-                        CharSequence text = appPairs[index][0] + " UNAVAILABLE";
-                        int duration = Toast.LENGTH_SHORT;
-                        Toast toast = Toast.makeText(getApplicationContext(), text, duration);
-                        toast.show();
-                    }
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    launchSelected(appPairs, index);
+                    return true;
                 }
 
                 return false;
@@ -170,7 +116,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
         pos = 0; //0-(maxPos-1) (position within UI bounds)
         index = 0; //0-(appPairs.length-1) (index of selected element in appPairs)
-
         lastKnownY = 0;
         yDelta = 0;
 
@@ -182,10 +127,74 @@ public class FullscreenActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
-        //Re-Initialize UI
+        //Reinitialize UI
+        final TextView UI_container = findViewById(R.id.UI_container);
+        final TextView selected_item = findViewById(R.id.selected_item);
+        UI_container.setText(get_UI_String(appPairs, index));
+        selected_item.setText(appPairs[index][0]);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         final TextView UI_container = findViewById(R.id.UI_container);
         final TextView selected_item = findViewById(R.id.selected_item);
 
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_UP:
+                System.out.println("UP");
+                if (index > 0) {
+                    index--;
+                }
+                //update pos (in case user returns to touch navigation)
+                pos = clamp((index * chunkSize) + (chunkSize/2));
+
+                UI_container.setText(get_UI_String(appPairs, index));
+                selected_item.setText(appPairs[index][0]);
+                return true;
+
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                System.out.println("DOWN");
+                if (index < appPairs.length - 1) {
+                    index++;
+                }
+                //update pos (in case user returns to touch navigation)
+                pos = clamp((index * chunkSize) + (chunkSize/2));
+
+                UI_container.setText(get_UI_String(appPairs, index));
+                selected_item.setText(appPairs[index][0]);
+                return true;
+
+            case KeyEvent.KEYCODE_ENTER:
+                System.out.println("ENTER");
+                launchSelected(appPairs, index);
+                return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void launchSelected(String appPairs[][], int index) {
+        Intent launchIntent;
+
+        if (appPairs[index][3] == null) {
+            launchIntent = new Intent(appPairs[index][1]);
+            launchIntent.addCategory(appPairs[index][2]);
+        }
+        //handle explicitly defined packages (eg: spotify)
+        else {
+            launchIntent = getPackageManager().getLaunchIntentForPackage(appPairs[index][3]);
+        }
+        try {
+            launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(launchIntent);
+        } catch (Exception e) {
+            CharSequence text = appPairs[index][0] + " UNAVAILABLE";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
+        }
+    }
+
+    private String get_UI_String(String appPairs[][], int index) {
         String UI_backgroundString = "";
         for (int i = 0; i < (appPairs.length) - index; i++) {
             UI_backgroundString += "\n";
@@ -196,10 +205,17 @@ public class FullscreenActivity extends AppCompatActivity {
         for (int i = 0; i < index; i++) {
             UI_backgroundString += "\n";
         }
-        UI_container.setText(UI_backgroundString);
-        selected_item.setText(appPairs[index][0]);
+        return UI_backgroundString;
+    }
+
+    private float clamp(float unclampedPos) {
+        if (unclampedPos < 0) {
+            pos = 0;
+        } else if (unclampedPos >= maxPos) {
+            pos = maxPos - 1;
+        } else {
+            pos = unclampedPos;
+        }
+        return pos;
     }
 }
-
-//TODO:
-//add keyboard support c:
