@@ -4,33 +4,35 @@
     package="hunterirving.forte">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-
-
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
         <activity
+            android:name=".ToolsPage"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_tools_page"
+            android:theme="@style/FullscreenTheme"></activity>
+        <activity
+            android:name=".FullscreenActivity"
             android:clearTaskOnLaunch="true"
-            android:name="FullscreenActivity"
-            android:screenOrientation="portrait"
             android:label="@string/app_name"
-
+            android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

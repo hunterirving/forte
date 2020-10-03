@@ -15,23 +15,25 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static android.content.Intent.ACTION_CALL_BUTTON;
+import static android.content.Intent.CATEGORY_APP_MAPS;
 import static android.content.Intent.ACTION_MAIN;
-import static android.content.Intent.CATEGORY_APP_GALLERY;
-import static android.content.Intent.CATEGORY_APP_MESSAGING;
+import static android.content.Intent.CATEGORY_APP_CALCULATOR;
+import static android.content.Intent.CATEGORY_APP_CALENDAR;
 import static android.content.Intent.CATEGORY_DEFAULT;
-import static android.provider.MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA;
+import static android.content.Intent.CATEGORY_APP_MUSIC;
+import static android.provider.AlarmClock.ACTION_SHOW_ALARMS;
 
-public class FullscreenActivity extends AppCompatActivity {
+public class ToolsPage extends AppCompatActivity {
     //DISPLAY_NAME, INTENT_TYPE, INTENT_CATEGORY, PACKAGE_NAME
     //each appPair must include either <INTENT_TYPE and INTENT_CATEGORY> or <PACKAGE_NAME>
     final String[][] appPairs = {
-                {"CAMERA", INTENT_ACTION_STILL_IMAGE_CAMERA, CATEGORY_DEFAULT, null},
-                {"GALLERY", ACTION_MAIN, CATEGORY_APP_GALLERY, null},
-                {"TELEPHONE", ACTION_CALL_BUTTON, CATEGORY_DEFAULT, null},
-                {"TELEGRAPH", ACTION_MAIN, CATEGORY_APP_MESSAGING, null},
-                {"TOOLS", null, null, null}
-            };
+            {"←", null, null, null},
+            {"ATLAS", ACTION_MAIN, CATEGORY_APP_MAPS, null},
+            {"ALARM", ACTION_SHOW_ALARMS, CATEGORY_DEFAULT, null},
+            {"CALCULATOR", ACTION_MAIN, CATEGORY_APP_CALCULATOR, null},
+            {"CALENDAR", ACTION_MAIN, CATEGORY_APP_CALENDAR, null},
+            {"PHONOGRAPH", ACTION_MAIN, CATEGORY_APP_MUSIC, null}
+    };
 
     int chunkSize = 85;
     float maxPos = chunkSize * appPairs.length;
@@ -175,8 +177,8 @@ public class FullscreenActivity extends AppCompatActivity {
     private void launchSelected(String appPairs[][], int index) {
         Intent launchIntent;
 
-        if (appPairs[index][0] == "TOOLS") { //Specifically to launch local activities. Grab class generically using string name?
-            launchIntent = new Intent(getApplicationContext(), ToolsPage.class);
+        if (appPairs[index][0] == "←") { //Specifically to launch local activities. Grab class generically using string name?
+            launchIntent = new Intent(getApplicationContext(), FullscreenActivity.class);
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(launchIntent);
         }
