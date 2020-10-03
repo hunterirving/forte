@@ -187,6 +187,7 @@ public class FullscreenActivity extends AppCompatActivity {
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(launchIntent);
         } catch (Exception e) {
+            System.out.println(e);
             CharSequence text = appPairs[index][0] + " UNAVAILABLE";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(getApplicationContext(), text, duration);
