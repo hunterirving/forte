@@ -164,6 +164,7 @@ public class FullscreenActivity extends AppCompatActivity {
                 return true;
 
             case KeyEvent.KEYCODE_ENTER:
+            case KeyEvent.KEYCODE_DPAD_CENTER:
                 launchSelected(appPairs, index);
                 return true;
         }
