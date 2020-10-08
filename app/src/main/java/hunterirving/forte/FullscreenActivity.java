@@ -7,13 +7,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import static android.content.Intent.ACTION_CALL_BUTTON;
 import static android.content.Intent.ACTION_MAIN;
@@ -141,7 +142,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_UP:
-                System.out.println("UP");
                 if (index > 0) {
                     index--;
                 }
@@ -153,7 +153,6 @@ public class FullscreenActivity extends AppCompatActivity {
                 return true;
 
             case KeyEvent.KEYCODE_DPAD_DOWN:
-                System.out.println("DOWN");
                 if (index < appPairs.length - 1) {
                     index++;
                 }
@@ -165,7 +164,6 @@ public class FullscreenActivity extends AppCompatActivity {
                 return true;
 
             case KeyEvent.KEYCODE_ENTER:
-                System.out.println("ENTER");
                 launchSelected(appPairs, index);
                 return true;
         }
@@ -187,7 +185,6 @@ public class FullscreenActivity extends AppCompatActivity {
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(launchIntent);
         } catch (Exception e) {
-            System.out.println(e);
             CharSequence text = appPairs[index][0] + " UNAVAILABLE";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(getApplicationContext(), text, duration);
