@@ -12,7 +12,7 @@ touch and release to select one of four built-in applications.<br>
 <h3>a surge of deep satisfaction</h3>
 re-imagine your phone as a tool. rediscover freedom of the mind.<br>
 
-<h3>what's in the box</h3>
+<h3>what's in the box:</h3>
 • ATLAS, a map of the entire planet (pocket version)<br>
 • CAMERA, a tool for capturing memories (now in color!)<br>
 • TELEPHONE, which converts audible vibrations into radio waves, enabling brain-to-brain psychic communication with anyone in the world<br>
