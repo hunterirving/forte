@@ -26,6 +26,7 @@ re-imagine your phone as a tool. rediscover freedom of the mind.<br>
 • gameboy<br>
 
 <h3>btw...</h3>
-forte is distributed as free (libre) software. learn more at <a href="hunterirving.com/forte">hunterirving.com/forte</a><br><br>
-
-you can support forte's continued development at <a href="patreon.com/hunterirving">patreon.com/hunterirving</a>
+forte is distributed as free (libre) software. learn more at <a href="www.hunterirving.com/forte">hunterirving.com/forte</a><br><br>
+you can support forte's continued development at <a href="https://www.patreon.com/hunterirving">patreon.com/hunterirving</a>
+<br>
+🗺️📷☎️📃
