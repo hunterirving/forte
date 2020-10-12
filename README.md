@@ -25,8 +25,7 @@ re-imagine your phone as a tool. rediscover freedom of the mind.<br>
 • pocket calculator<br>
 • gameboy<br>
 <br>
-<h3>btw...</h3>
-forte is distributed as free (libre) software. learn more at <a href="http://www.hunterirving.com/forte">hunterirving.com/forte</a>.<br>
-you can support forte's continued development at <a href="https://www.patreon.com/hunterirving">patreon.com/hunterirving</a>.
+<h3>more info</h3>
+<a href="http://www.hunterirving.com/forte">hunterirving.com/forte</a>.
 <br><br>
 🗺️📷☎️📃
