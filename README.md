@@ -25,5 +25,5 @@ re-imagine your phone as a tool. rediscover freedom of the mind.<br>
 • pocket calculator<br>
 • gameboy<br>
 <br>
-<h3>more info</h3>
-<a href="http://www.hunterirving.com/forte">hunterirving.com/forte</a> 🗺️📷☎️📃
+<h3>more info:</h3>
+<a href="http://www.hunterirving.com/forte">hunterirving.com/forte</a>
