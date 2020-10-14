@@ -7,7 +7,7 @@ the android launcher that makes your smartphone dumber.
 ditch your cluttered home screen. keep the necessities.<br>
 <br>
 <h3>robust and elegant</h3>
-touch and release to select one of four built-in applications.<br>
+swipe to select one of four built-in applications.<br>
 <br>
 <h3>a surge of deep satisfaction</h3>
 re-imagine your phone as a tool. rediscover freedom of the mind.<br>
