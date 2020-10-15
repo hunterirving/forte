@@ -1,10 +1,11 @@
 # forte
-the android launcher that makes your smartphone dumber.
+the android launcher that makes your smartphone dumber.<br>
+<a href="https://play.google.com/store/apps/details?id=hunterirving.forte">available now on google play</a>.
 <br><br>
 <img src="forte.gif" height=500>
 <br>
 <h3>a cure for what ails you</h3>
-ditch your cluttered home screen. keep the necessities.<br>
+ditch your cluttered home screen. keep the necessities.
 <br>
 <h3>robust and elegant</h3>
 swipe to select one of four built-in applications.<br>
