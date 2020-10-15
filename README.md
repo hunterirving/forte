@@ -5,7 +5,7 @@ the android launcher that makes your smartphone dumber.<br>
 <img src="forte.gif" height=500>
 <br>
 <h3>a cure for what ails you</h3>
-ditch your cluttered home screen. keep the necessities.
+ditch your cluttered home screen. keep the necessities.<br>
 <br>
 <h3>robust and elegant</h3>
 swipe to select one of four built-in applications.<br>
