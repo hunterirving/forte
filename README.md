@@ -21,7 +21,7 @@ re-imagine your phone as a tool. rediscover freedom of the mind.<br>
 <br>
 <h3>optional accessories (not included):</h3>
 • daily planner/sketchbook<br>
-• wired bedside alarm clock<br>
+• bedside alarm clock<br>
 • walkman/mp3 player<br>
 • pocket calculator<br>
 • gameboy<br>
