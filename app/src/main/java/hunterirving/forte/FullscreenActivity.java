@@ -30,7 +30,7 @@ public class FullscreenActivity extends AppCompatActivity {
                     {"ATLAS", ACTION_MAIN, CATEGORY_APP_MAPS, null},
                     {"CAMERA", INTENT_ACTION_STILL_IMAGE_CAMERA, CATEGORY_DEFAULT, null},
                     {"TELEPHONE", ACTION_CALL_BUTTON, CATEGORY_DEFAULT, null},
-                    {"TELEGRAPH", ACTION_MAIN, CATEGORY_APP_MESSAGING, null}/*,
+                    {"TELEGRAPH°", ACTION_MAIN, CATEGORY_APP_MESSAGING, null}/*,
                     {"PHONOGRAPH", null, null, "com.spotify.music"}*/
             };
 

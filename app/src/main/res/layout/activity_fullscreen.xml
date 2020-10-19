@@ -8,9 +8,6 @@
     android:background="#000000"
     tools:context=".FullscreenActivity">
 
-
-
-
     <View
         android:id="@+id/white_bar"
         android:layout_width="match_parent"
