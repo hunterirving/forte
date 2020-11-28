@@ -29,3 +29,5 @@ re-imagine your phone as a tool. rediscover freedom of the mind.<br>
 <br>
 <h3>web site</h3>
 <a href="http://www.hunterirving.com/forte">hunterirving.com/forte</a>
+
+🗺️📷☎️📃
