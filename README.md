@@ -1,4 +1,4 @@
-# forte
+# forte 🁣
 the android launcher that makes your smartphone dumber.<br>
 <a href="https://play.google.com/store/apps/details?id=hunterirving.forte">now available on google play</a>.
 <br><br>
