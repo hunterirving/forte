@@ -2,9 +2,9 @@
 
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/backgroundColor</item>
+        <item name="colorPrimaryDark">@color/backgroundColor</item>
+        <item name="colorAccent">@color/backgroundColor</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
@@ -17,15 +17,8 @@
     </style>
 
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/colorPrimaryDark</item>
-    </style> -->
+        <item name="android:background">@color/backgroundColor</item>
+    </style><![CDATA[ -->
 
-    <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-    </style>
-
-    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/colorPrimaryDark</item>
-    </style>
-
+    ]]>
 </resources>

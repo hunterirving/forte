@@ -5,14 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/backgroundColor"
     tools:context=".FullscreenActivity">
+
 
     <View
         android:id="@+id/white_bar"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:background="#FFFFFF"
+        android:layout_height="42dp"
+        android:background="@color/foregroundColor"
         android:layout_gravity="center" />
 
     <TextView
@@ -24,12 +25,12 @@
         android:fontFamily="@font/moonlight"
         android:gravity="center"
         android:letterSpacing="0.05"
-        android:lineSpacingExtra="13.5dp"
-        android:paddingLeft="26dp"
+        android:lineSpacingExtra="14dp"
+        android:paddingLeft="20dp"
         android:text=""
         android:textAlignment="textStart"
-        android:textColor="#FFFFFF"
-        android:textSize="42dp"
+        android:textColor="@color/foregroundColor"
+        android:textSize="38dp"
         android:paddingTop="3dp"
         tools:ignore="HardcodedText,RtlCompat,RtlHardcoded,RtlSymmetry,SpUsage" />
 
@@ -41,13 +42,13 @@
         android:background="#00000000"
         android:fontFamily="@font/moonlight"
         android:gravity="center"
-        android:paddingLeft="26dp"
+        android:paddingLeft="20dp"
         android:text=""
         android:textAlignment="textStart"
         android:letterSpacing="0.05"
-        android:lineSpacingExtra="13.5dp"
-        android:textColor="#000000"
-        android:textSize="42dp"
+        android:lineSpacingExtra="14dp"
+        android:textColor="@color/backgroundColor"
+        android:textSize="38dp"
         android:paddingTop="3dp"
         tools:ignore="HardcodedText,RtlCompat,RtlHardcoded,RtlSymmetry,SpUsage" />
 
